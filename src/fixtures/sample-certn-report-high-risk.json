@@ -1,0 +1,32 @@
+{
+  "applicant_id": "9f8e7d6c-5b4a-3928-1706-f5e4d3c2b1a0",
+  "tag": "landward-ontario-screening",
+  "identity": {
+    "status": "partial",
+    "narrative": "Name and date of birth matched, but the address on file with the credit bureau does not match the address provided on the application. No government ID mismatch was found."
+  },
+  "credit": {
+    "bureau_score": 561,
+    "delinquencies_24mo": 4,
+    "collections_open": 2,
+    "bankruptcy_or_consumer_proposal": false,
+    "narrative": "Four missed payments across two revolving accounts in the last 24 months, with two accounts currently in collections. No insolvency filing on record."
+  },
+  "litigation": [
+    {
+      "source": "LTB",
+      "case_number": "LTB-2023-11029",
+      "date": "2023-11-02",
+      "narrative": "Landlord's application for termination of tenancy and an order to pay rent arrears was granted against this applicant. The order required payment of $3,400 in arrears; enforcement status is not recorded."
+    }
+  ],
+  "criminal": [
+    {
+      "jurisdiction": "Ontario Court of Justice",
+      "offense": "Mischief under $5,000",
+      "disposition": "Conditional discharge",
+      "date": "2021-03-10",
+      "narrative": "Charge stemmed from damage to a shared stairwell at a previous residence during a dispute with a neighbour. Applicant received a conditional discharge after completing restitution."
+    }
+  ]
+}

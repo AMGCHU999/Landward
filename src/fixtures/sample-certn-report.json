@@ -1,0 +1,24 @@
+{
+  "applicant_id": "b1e2c3d4-5f6a-7b8c-9d0e-1f2a3b4c5d6e",
+  "tag": "landward-ontario-screening",
+  "identity": {
+    "status": "verified",
+    "narrative": "Name, date of birth, and current address all matched government and bureau records on the first pass. No aliases or discrepancies found."
+  },
+  "credit": {
+    "bureau_score": 712,
+    "delinquencies_24mo": 0,
+    "collections_open": 0,
+    "bankruptcy_or_consumer_proposal": false,
+    "narrative": "Credit history spans 6 years with two revolving accounts and one installment loan, all in good standing. No delinquencies, collections, or insolvency filings in the last 24 months."
+  },
+  "litigation": [
+    {
+      "source": "LTB",
+      "case_number": "LTB-2022-04412",
+      "date": "2022-08-15",
+      "narrative": "Landlord applied for an above-guideline rent increase against the building; applicant was one of several respondent tenants. Application was resolved by mediated settlement with no order against any individual tenant."
+    }
+  ],
+  "criminal": null
+}

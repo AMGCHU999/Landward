@@ -1,0 +1,29 @@
+{
+  "tag": "landward-ontario-screening",
+  "email": "applicant@example.com",
+  "phone_number": {
+    "country_code": "1",
+    "number": "4165550199"
+  },
+  "package_id": "4eb8015e-b4d5-4a32-9913-3692fa0bb199",
+  "information": {
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "addresses": [
+      {
+        "address": "123 Tenant Way",
+        "city": "Markham",
+        "province_state": "ON",
+        "country": "CA",
+        "postal_code": "L3R5H5"
+      }
+    ]
+  },
+  "position_or_property_location": {
+    "address": "500 Elden Road",
+    "city": "Markham",
+    "province_state": "ON",
+    "country": "CA",
+    "postal_code": "L3R 5H5"
+  }
+}
