@@ -18,7 +18,8 @@ export default function LandingPage() {
       <TrustBar />
       <TwoGates />
       <Pricing />
-      <ScreeningDemo />
+      {/* Dev-only: its buttons call dev-server routes that don't exist in the deployed site. */}
+      {import.meta.env.DEV && <ScreeningDemo />}
       <RequestSection />
       <Segments />
       <Faq />
