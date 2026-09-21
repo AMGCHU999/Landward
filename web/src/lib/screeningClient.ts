@@ -1,6 +1,6 @@
-import type { CertnReport, TenantRiskEvaluation } from '../../../src/screening/types.js'
+import type { CertnReport, TenantRiskEvaluation } from '@root/screening/types.js'
 
-export type * from '../../../src/screening/types.js'
+export type * from '@root/screening/types.js'
 
 export async function evaluateScreeningReport(report: CertnReport): Promise<TenantRiskEvaluation> {
   const response = await fetch('/api/screening/evaluate', {

@@ -1,28 +1,9 @@
-export interface CertnAddress {
-  address: string
-  city: string
-  province_state: string
-  country: string
-  postal_code: string
-}
-
-export interface CertnApplicantPayload {
-  tag: string
+export interface CertnScreeningRequest {
   email: string
-  phone_number: {
-    country_code: string
-    number: string
-  }
-  package_id: string
-  information: {
-    first_name: string
-    last_name: string
-    addresses: CertnAddress[]
-  }
-  position_or_property_location: CertnAddress
+  sendInviteEmail?: boolean
 }
 
-export async function submitScreeningApplicant(payload: CertnApplicantPayload) {
+export async function submitScreeningApplicant(payload: CertnScreeningRequest) {
   const response = await fetch('/api/certn/applicants', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

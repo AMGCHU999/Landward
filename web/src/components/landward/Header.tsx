@@ -20,7 +20,7 @@ export default function Header() {
           <a href="#faq">FAQ</a>
         </nav>
         <div className="nav-actions">
-          <a className="btn btn-ghost" href="#">Log in</a>
+          <a className="btn btn-ghost" href="https://client.certn.co/ca" target="_blank" rel="noopener noreferrer">Log in</a>
           <a className="btn btn-primary" href="#get-started">Screen an applicant — $45</a>
         </div>
       </div>

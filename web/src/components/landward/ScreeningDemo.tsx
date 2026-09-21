@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import sampleApplicant from '../../fixtures/sample-applicant.json'
-import cleanReport from '../../../../src/fixtures/sample-certn-report.json'
-import highRiskReport from '../../../../src/fixtures/sample-certn-report-high-risk.json'
+import cleanReport from '@root/fixtures/sample-certn-report.json'
+import highRiskReport from '@root/fixtures/sample-certn-report-high-risk.json'
 import { submitScreeningApplicant } from '../../lib/certnClient'
 import { evaluateScreeningReport, type CertnReport, type TenantRiskEvaluation } from '../../lib/screeningClient'
 
@@ -83,10 +83,11 @@ export default function ScreeningDemo() {
       <div className="scope-note">
         <strong>Dev integration check</strong> — sends the sample applicant fixture to{' '}
         <span className="mono">POST /api/certn/applicants</span>, a local dev-server route that calls the
-        same <span className="mono">createApplicant()</span> logic as the root project's{' '}
-        <span className="mono">src/certn.ts</span>. Requires a real <span className="mono">CERTN_API_KEY</span> in
-        the project root <span className="mono">.env</span> — once that's a live key, every click here fires a
-        real request to Certn, so this panel should come out before the page goes public.
+        same <span className="mono">orderScreeningCase()</span> logic as the root project's{' '}
+        <span className="mono">src/certn.ts</span> (Certn Centric API). It uses the sandbox unless{' '}
+        <span className="mono">CERTN_ENV=production</span> is set in the project root{' '}
+        <span className="mono">.env</span> — with <span className="mono">CERTN_PRODUCTION_API_KEY</span> set, every
+        click here would order a real billed check, so this panel should come out before the page goes public.
         <div style={{ marginTop: 12 }}>
           <button type="button" className="btn btn-ghost" onClick={runTest} disabled={status === 'loading'}>
             {status === 'loading' ? 'Submitting…' : 'Run sample screening request'}

@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import * as dotenv from 'dotenv'
 import { defineConfig, type Plugin, type ViteDevServer } from 'vite'
-import { createApplicant } from './src/server/certnBridge.js'
+import { orderScreeningCase } from './src/server/certnBridge.js'
 import { evaluateTenantRisk } from './src/server/screeningEvaluator.js'
 
 dotenv.config({ path: path.resolve(import.meta.dirname, '../.env') })
@@ -23,7 +23,7 @@ function certnApiPlugin(): Plugin {
           const chunks: Buffer[] = []
           for await (const chunk of req) chunks.push(chunk as Buffer)
           const payload = JSON.parse(Buffer.concat(chunks).toString('utf-8'))
-          const result = await createApplicant(payload)
+          const result = await orderScreeningCase(payload)
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify(result))
         } catch (error) {
@@ -60,4 +60,7 @@ function certnApiPlugin(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), certnApiPlugin()],
+  resolve: {
+    alias: { '@root': path.resolve(import.meta.dirname, '../src') },
+  },
 })
