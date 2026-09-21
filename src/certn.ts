@@ -14,18 +14,29 @@ const CERTN_API_KEY_VARS: Record<CertnEnvironment, string> = {
   production: "CERTN_PRODUCTION_API_KEY",
 };
 
+// Credit report templates (Client Portal > Settings > Templates) belong to one account,
+// so sandbox and production each have their own template ID.
+const CERTN_CREDIT_TEMPLATE_VARS: Record<CertnEnvironment, string> = {
+  sandbox: "CERTN_SANDBOX_CREDIT_TEMPLATE_ID",
+  production: "CERTN_PRODUCTION_CREDIT_TEMPLATE_ID",
+};
+
 export type CertnCheckArguments = Record<string, Record<string, unknown>>;
 
 // Landward's standard tenant screening: OneID identity verification plus a Canadian
-// credit report (Equifax).
-export const LANDWARD_SCREENING_CHECKS: CertnCheckArguments = {
-  IDENTITY_VERIFICATION_1: {},
-  CREDIT_REPORT_1: {
-    ordering_type: "SINGLE_REGION",
-    umbrella_client_permitted_child_check_types: ["CANADIAN_CREDIT_REPORT_1"],
-    INCLUDE_PREVIOUS_NAMES: true,
-  },
-};
+// credit report (Equifax). With a template, address-based ordering (MULTI_REGION) takes
+// its look-back period and minimum address duration from the template; without one, the
+// order falls back to a single Canadian credit report.
+export function buildScreeningChecks(creditTemplateId?: string): CertnCheckArguments {
+  const creditReport: Record<string, unknown> = creditTemplateId
+    ? { ordering_type: "MULTI_REGION", template_id: creditTemplateId, INCLUDE_PREVIOUS_NAMES: true }
+    : {
+        ordering_type: "SINGLE_REGION",
+        umbrella_client_permitted_child_check_types: ["CANADIAN_CREDIT_REPORT_1"],
+        INCLUDE_PREVIOUS_NAMES: true,
+      };
+  return { IDENTITY_VERIFICATION_1: {}, CREDIT_REPORT_1: creditReport };
+}
 
 export interface CertnScreeningRequest {
   email: string;
@@ -42,6 +53,7 @@ export interface CertnCaseResponse {
 export interface CertnClientOptions {
   environment?: CertnEnvironment;
   apiKey?: string;
+  creditTemplateId?: string;
 }
 
 // Defaults to sandbox so a missing setting can never run billed production checks.
@@ -67,6 +79,8 @@ export async function orderScreeningCase(
     throw new Error("A valid applicant email is required.");
   }
 
+  const creditTemplateId =
+    options.creditTemplateId ?? (process.env[CERTN_CREDIT_TEMPLATE_VARS[environment]] || undefined);
   const sendInviteEmail = request.sendInviteEmail ?? true;
   const response = await fetch(`${CERTN_BASE_URLS[environment]}/api/public/cases/order/`, {
     method: "POST",
@@ -78,7 +92,7 @@ export async function orderScreeningCase(
       email_address: request.email,
       send_invite_email: sendInviteEmail,
       return_invite_link: !sendInviteEmail,
-      check_types_with_arguments: LANDWARD_SCREENING_CHECKS,
+      check_types_with_arguments: buildScreeningChecks(creditTemplateId),
     }),
   });
 

@@ -15,15 +15,22 @@ const CERTN_API_KEY_VARS: Record<CertnEnvironment, string> = {
   production: 'CERTN_PRODUCTION_API_KEY',
 }
 
+const CERTN_CREDIT_TEMPLATE_VARS: Record<CertnEnvironment, string> = {
+  sandbox: 'CERTN_SANDBOX_CREDIT_TEMPLATE_ID',
+  production: 'CERTN_PRODUCTION_CREDIT_TEMPLATE_ID',
+}
+
 export type CertnCheckArguments = Record<string, Record<string, unknown>>
 
-export const LANDWARD_SCREENING_CHECKS: CertnCheckArguments = {
-  IDENTITY_VERIFICATION_1: {},
-  CREDIT_REPORT_1: {
-    ordering_type: 'SINGLE_REGION',
-    umbrella_client_permitted_child_check_types: ['CANADIAN_CREDIT_REPORT_1'],
-    INCLUDE_PREVIOUS_NAMES: true,
-  },
+export function buildScreeningChecks(creditTemplateId?: string): CertnCheckArguments {
+  const creditReport: Record<string, unknown> = creditTemplateId
+    ? { ordering_type: 'MULTI_REGION', template_id: creditTemplateId, INCLUDE_PREVIOUS_NAMES: true }
+    : {
+        ordering_type: 'SINGLE_REGION',
+        umbrella_client_permitted_child_check_types: ['CANADIAN_CREDIT_REPORT_1'],
+        INCLUDE_PREVIOUS_NAMES: true,
+      }
+  return { IDENTITY_VERIFICATION_1: {}, CREDIT_REPORT_1: creditReport }
 }
 
 export interface CertnScreeningRequest {
@@ -40,6 +47,7 @@ export interface CertnCaseResponse {
 export interface CertnClientOptions {
   environment?: CertnEnvironment
   apiKey?: string
+  creditTemplateId?: string
 }
 
 export function resolveCertnEnvironment(
@@ -64,6 +72,8 @@ export async function orderScreeningCase(
     throw new Error('A valid applicant email is required.')
   }
 
+  const creditTemplateId =
+    options.creditTemplateId ?? (process.env[CERTN_CREDIT_TEMPLATE_VARS[environment]] || undefined)
   const sendInviteEmail = request.sendInviteEmail ?? true
   const response = await fetch(`${CERTN_BASE_URLS[environment]}/api/public/cases/order/`, {
     method: 'POST',
@@ -75,7 +85,7 @@ export async function orderScreeningCase(
       email_address: request.email,
       send_invite_email: sendInviteEmail,
       return_invite_link: !sendInviteEmail,
-      check_types_with_arguments: LANDWARD_SCREENING_CHECKS,
+      check_types_with_arguments: buildScreeningChecks(creditTemplateId),
     }),
   })
 
