@@ -44,8 +44,8 @@ export default function TwoGates() {
               <li>
                 <span className="num mono">04</span>
                 <div>
-                  <b>Risk verdict</b>
-                  <span>Low / Medium / High — scored across credit, tenancy history, and identity, with the reasons shown.</span>
+                  <b>Risk assessment</b>
+                  <span>Our Low / Medium / High assessment across credit, tenancy history, and identity — the decision stays yours.</span>
                 </div>
               </li>
             </ul>
