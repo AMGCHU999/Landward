@@ -16,7 +16,8 @@ export default function Hero() {
               with credit, background, and identity verification. And if a tenancy still goes wrong, we
               connect you directly with our vetted network of licensed Ontario paralegals and lawyers for
               Landlord and Tenant Board and Small Claims Court representation, free of charge. Most
-              screening services stop at the report. We don't.
+              screening companies sell you a report and disappear. We do the deeper background check —
+              and if the tenancy still goes wrong, our free legal network picks up where the report left off.
             </p>
             <div className="hero-ctas">
               <a href="#get-started" className="btn btn-primary">
