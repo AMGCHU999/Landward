@@ -23,7 +23,7 @@ export default function TwoGates() {
               <li>
                 <span className="num mono">01</span>
                 <div>
-                  <b>Credit &amp; background check</b>
+                  <b>Credit report</b>
                   <span>The financial picture, verified.</span>
                 </div>
               </li>
@@ -39,13 +39,6 @@ export default function TwoGates() {
                 <div>
                   <b>Court &amp; LTB history check</b>
                   <span>Public court and tribunal decisions, searched for you.</span>
-                </div>
-              </li>
-              <li>
-                <span className="num mono">04</span>
-                <div>
-                  <b>Criminal record check</b>
-                  <span>Available as an add-on (pricing announced at launch) — legal for housing screening in Ontario, a ground restricted only in employment.</span>
                 </div>
               </li>
             </ul>
