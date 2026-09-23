@@ -37,7 +37,7 @@ export default function TwoGates() {
               <li>
                 <span className="num mono">03</span>
                 <div>
-                  <b>Free CanLII litigation &amp; LTB check</b>
+                  <b>Court &amp; LTB history check</b>
                   <span>Public court and tribunal decisions, searched for you.</span>
                 </div>
               </li>

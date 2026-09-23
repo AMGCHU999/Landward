@@ -20,7 +20,7 @@ export default function Pricing() {
             <ul className="includes">
               <li>Credit report</li>
               <li>Identity verification</li>
-              <li>Free CanLII litigation &amp; LTB check</li>
+              <li>Court &amp; LTB history check</li>
               <li>Defensible, Code-compliant documentation</li>
             </ul>
           </div>

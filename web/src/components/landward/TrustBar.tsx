@@ -1,7 +1,7 @@
 const items = [
   'Billed to the landlord, never the applicant',
   'Ontario Human Rights Code screening criteria applied correctly',
-  'Free CanLII litigation & LTB check on every report',
+  'Court & LTB history check on every report',
   'Dedicated legal network on call',
 ]
 

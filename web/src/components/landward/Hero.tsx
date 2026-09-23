@@ -11,7 +11,7 @@ export default function Hero() {
               Legal support on <em>both ends</em> of a tenancy.
             </h1>
             <p className="lede">
-              Every $45 Landward report includes a CanLII litigation &amp; LTB check at no extra charge —
+              Every $45 Landward report includes a Court &amp; LTB history check at no extra charge —
               the applicant's history in public court and tribunal decisions, searched for you and bundled
               with credit, background, and identity verification. And if a tenancy still goes wrong, we
               connect you directly with our vetted network of licensed Ontario paralegals and lawyers for
