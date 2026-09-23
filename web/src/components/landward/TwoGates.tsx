@@ -45,7 +45,7 @@ export default function TwoGates() {
                 <span className="num mono">04</span>
                 <div>
                   <b>Criminal record check</b>
-                  <span>Available as an add-on — legal for housing screening in Ontario, a ground restricted only in employment.</span>
+                  <span>Available as an add-on (pricing announced at launch) — legal for housing screening in Ontario, a ground restricted only in employment.</span>
                 </div>
               </li>
             </ul>
