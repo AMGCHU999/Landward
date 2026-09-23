@@ -13,7 +13,8 @@ export default function Hero() {
             <p className="lede">
               Every $45 Landward report includes a Court &amp; LTB history check at no extra charge —
               the applicant's history in public court and tribunal decisions, searched for you and bundled
-              with credit, background, and identity verification. And if a tenancy still goes wrong, we
+              with credit, background, and identity verification — and closes with a clear risk verdict:
+              Low, Medium, or High, with the reasons behind it. And if a tenancy still goes wrong, we
               connect you directly with our vetted network of licensed Ontario paralegals and lawyers for
               Landlord and Tenant Board and Small Claims Court representation, free of charge. Most
               screening companies sell you a report and disappear. We do the deeper background check —

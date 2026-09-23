@@ -41,6 +41,13 @@ export default function TwoGates() {
                   <span>Public court and tribunal decisions, searched for you.</span>
                 </div>
               </li>
+              <li>
+                <span className="num mono">04</span>
+                <div>
+                  <b>Risk verdict</b>
+                  <span>Low / Medium / High — scored across credit, tenancy history, and identity, with the reasons shown.</span>
+                </div>
+              </li>
             </ul>
           </div>
           <div className="gate-col back">

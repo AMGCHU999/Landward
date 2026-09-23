@@ -21,6 +21,7 @@ export default function Pricing() {
               <li>Credit report</li>
               <li>Identity verification</li>
               <li>Court &amp; LTB history check</li>
+              <li>Risk verdict: Low / Medium / High, with the reasons behind it</li>
               <li>Defensible, Code-compliant documentation</li>
             </ul>
           </div>
