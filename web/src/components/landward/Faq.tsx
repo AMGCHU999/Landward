@@ -52,15 +52,6 @@ export default function Faq() {
             </p>
           </details>
           <details className="faq-item">
-            <summary>Is a criminal record check actually legal to use in tenant screening?</summary>
-            <p>
-              Yes, in Ontario. "Record of offences" is a protected ground under the Human Rights Code for
-              employment screening specifically — it isn't one of the Code's housing grounds. A criminal
-              record check is available as an add-on to your report (add-on pricing will be announced at
-              launch) for exactly this reason.
-            </p>
-          </details>
-          <details className="faq-item">
             <summary>Where do you operate?</summary>
             <p>
               Ontario, at launch. Every part of this page — the pricing, the legal-venue detail, the

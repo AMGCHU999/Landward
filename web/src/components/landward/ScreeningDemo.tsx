@@ -23,9 +23,6 @@ function RiskEvaluationResult({ evaluation }: { evaluation: TenantRiskEvaluation
       <ul style={{ marginTop: 8, paddingLeft: 18 }}>
         <li>Financial risk: {evaluation.dimensions.financialRisk.score.toFixed(1)} / 3</li>
         <li>Tenancy history risk: {evaluation.dimensions.tenancyHistoryRisk.score.toFixed(1)} / 3</li>
-        {evaluation.dimensions.criminalRelevance && (
-          <li>Criminal relevance: {evaluation.dimensions.criminalRelevance.score.toFixed(1)} / 2</li>
-        )}
         <li>Prior eviction/unpaid-rent order probability: {evaluation.flags.priorEvictionOrder.toFixed(2)}</li>
         <li>Identity mismatch probability: {evaluation.flags.identityMismatch.toFixed(2)}</li>
       </ul>
