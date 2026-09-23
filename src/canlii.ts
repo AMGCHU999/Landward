@@ -2,7 +2,7 @@
 //
 // Landward uses this to pull Landlord and Tenant Board (LTB) decisions and
 // other tribunal/court records as an independent litigation signal, mapped
-// into the same CertnLitigationRecord shape the risk evaluator consumes.
+// into the same CertnLitigationRecord shape the report builder consumes.
 //
 // API key: issued by CanLII (free for non-commercial use); passed as the
 // `api_key` query parameter on every request.
@@ -156,7 +156,7 @@ function titleMentionsName(title: string, name: string): boolean {
  *
  * Because CanLII exposes no name search, this pages through recent decisions
  * (newest first) and matches titles client-side — keep `maxCases` modest.
- * Returns records in the shape the tenant-risk evaluator consumes.
+ * Returns records in the shape the report builder consumes.
  */
 export async function findLitigationByName(
   name: string,

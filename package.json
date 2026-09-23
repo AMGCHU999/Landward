@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "tsx --test src/screening/evaluate.test.ts src/certn.test.ts src/canlii.test.ts",
-    "example": "tsx src/example.ts",
-    "screening-example": "tsx src/screening-example.ts"
+    "test": "tsx --test src/certn.test.ts src/canlii.test.ts",
+    "example": "tsx src/example.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
@@ -13,7 +12,6 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@typesafe-ai/sdk": "^0.6.0",
     "dotenv": "^17.4.2"
   }
 }

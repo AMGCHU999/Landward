@@ -1,6 +1,9 @@
-// Shape of a completed Certn background check report, as consumed by the risk
-// evaluator. Certn's real webhook payload carries more fields than this; these
-// are the ones the evaluator actually reads.
+// Shape of a completed Certn background check report, as assembled into the
+// Landward Report. Certn's real webhook payload carries more fields than this;
+// these are the ones the report presents as facts.
+//
+// Landward performs no risk assessment: no scoring, no Low/Medium/High tier.
+// The report presents verified facts and evidence; the landlord decides.
 
 export interface CertnCreditSummary {
   bureau_score: number | null;
@@ -37,22 +40,4 @@ export interface CertnReport {
   credit: CertnCreditSummary;
   litigation: CertnLitigationRecord[];
   criminal: CertnCriminalRecord[] | null;
-}
-
-export type RiskTier = "low" | "medium" | "high";
-
-export interface TenantRiskEvaluation {
-  riskTier: RiskTier;
-  riskTierConfidence: number;
-  compositeScore: number;
-  dimensions: {
-    financialRisk: { score: number; confidence: number; legend: Record<string, unknown> };
-    tenancyHistoryRisk: { score: number; confidence: number; legend: Record<string, unknown> };
-  };
-  flags: {
-    priorEvictionOrder: number;
-    identityMismatch: number;
-  };
-  requiresManualReview: boolean;
-  reviewReasons: string[];
 }

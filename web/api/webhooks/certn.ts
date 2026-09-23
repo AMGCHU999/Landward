@@ -38,8 +38,10 @@ function identifySender(rawBody: string, signature: string | null): CertnEnviron
 }
 
 async function handleCaseReportReady(event: CertnWebhookEvent, environment: CertnEnvironment) {
-  // object_id is the Certn case ID. Fetch the report and run it through the risk
-  // evaluator here; keep this fast, Certn expects a response within 10 seconds.
+  // object_id is the Certn case ID. Fetch the completed report here and assemble
+  // the Landward Report as facts and evidence only — Landward performs no risk
+  // assessment; the landlord decides. Keep this fast, Certn expects a response
+  // within 10 seconds.
   console.log(
     `[certn:${environment}] CASE_REPORT_READY event=${event.event_id} case=${event.object_id} status=${event.case_status}`
   );
