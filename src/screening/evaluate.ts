@@ -3,8 +3,7 @@ import type { EntryType } from "@typesafe-ai/sdk";
 import type { CertnReport, RiskTier, TenantRiskEvaluation } from "./types.js";
 
 // Code-owned so a weighting change never requires re-running inference.
-const DIMENSION_WEIGHTS_WITH_CRIMINAL = { financialRisk: 0.5, tenancyHistoryRisk: 0.35, criminalRelevance: 0.15 };
-const DIMENSION_WEIGHTS_NO_CRIMINAL = { financialRisk: 0.6, tenancyHistoryRisk: 0.4, criminalRelevance: 0 };
+const DIMENSION_WEIGHTS = { financialRisk: 0.6, tenancyHistoryRisk: 0.4 };
 
 // A confirmed eviction/unpaid-rent order or an identity mismatch is a hard
 // signal, not one to average away against an otherwise clean financial picture.
@@ -19,11 +18,11 @@ function getClient(): TypeSafeClient {
 }
 
 const riskTierQuestion = choice(
-  "Considering `identity_verification`, `credit_summary`, `litigation_records`, and `criminal_records`, and applying only tenancy-relevant reasoning (ability to pay rent, and history of tenancy-related legal disputes — never a protected human-rights ground), which overall tenant risk tier fits this applicant?",
+  "Considering `identity_verification`, `credit_summary`, and `litigation_records`, and applying only tenancy-relevant reasoning (ability to pay rent, and history of tenancy-related legal disputes — never a protected human-rights ground), which overall tenant risk tier fits this applicant?",
   {
-    low: "Stable credit, no confirmed tenant-at-fault eviction or unpaid-rent judgment, and no tenancy-relevant criminal history.",
+    low: "Stable credit, no confirmed tenant-at-fault eviction or unpaid-rent judgment.",
     medium: "Some financial strain (isolated delinquencies, thin credit) or an old or minor litigation record, but nothing that alone would justify rejection.",
-    high: "A confirmed eviction or unpaid-rent judgment against the applicant, severe or active financial distress (bankruptcy, open collections, or a pattern of delinquency), or a criminal record directly relevant to tenant or property safety.",
+    high: "A confirmed eviction or unpaid-rent judgment against the applicant, or severe or active financial distress (bankruptcy, open collections, or a pattern of delinquency).",
   },
 );
 
@@ -47,15 +46,6 @@ const tenancyHistoryRiskQuestion = score(
   ] as const,
 );
 
-const criminalRelevanceQuestion = score(
-  "How relevant is `criminal_records` to the safety of the property, other tenants, or on-time rent payment?",
-  [
-    "No records, or records unrelated to tenancy (dismissed, or unrelated to property, violence, or fraud).",
-    "A record with some relevance (e.g. a minor property offense) but limited or dated.",
-    "A record directly relevant to tenant or property safety (violence in a residence, arson, property destruction, or housing-related fraud).",
-  ] as const,
-);
-
 const priorEvictionOrderQuestion = noul(
   "Do `litigation_records` describe an order or judgment specifically against this applicant for eviction or unpaid rent — as opposed to the applicant being a non-liable party, or a landlord-initiated matter that was dismissed or withdrawn?",
   {
@@ -76,59 +66,24 @@ export async function evaluateTenantRisk(
   report: CertnReport,
   client: TypeSafeClient = getClient(),
 ): Promise<TenantRiskEvaluation> {
-  const hasCriminal = Boolean(report.criminal && report.criminal.length > 0);
-
   // The domain types describe this shape precisely; EntryType's index signature
   // is just how the SDK spells "JSON-compatible" for arbitrary state.
   const state = {
     identity_verification: report.identity,
     credit_summary: report.credit,
     litigation_records: report.litigation,
-    criminal_records: report.criminal ?? [],
   } as unknown as EntryType;
 
-  // Both branches ask every question over the same state in one request; the
-  // criminal-relevance question only makes sense once a criminal check ran.
-  const { answers } = hasCriminal
-    ? await client.systemOne({
-        state,
-        questions: {
-          riskTier: riskTierQuestion,
-          financialRisk: financialRiskQuestion,
-          tenancyHistoryRisk: tenancyHistoryRiskQuestion,
-          criminalRelevance: criminalRelevanceQuestion,
-          priorEvictionOrder: priorEvictionOrderQuestion,
-          identityMismatch: identityMismatchQuestion,
-        },
-      })
-    : await client.systemOne({
-        state,
-        questions: {
-          riskTier: riskTierQuestion,
-          financialRisk: financialRiskQuestion,
-          tenancyHistoryRisk: tenancyHistoryRiskQuestion,
-          priorEvictionOrder: priorEvictionOrderQuestion,
-          identityMismatch: identityMismatchQuestion,
-        },
-      });
-
-  // `answers` is a union of two SystemOne result shapes keyed by `hasCriminal`;
-  // that's the same runtime condition, so branch on it directly rather than
-  // fighting TypeScript's narrowing over a mapped-type union.
-  const criminalRelevance = hasCriminal
-    ? (() => {
-        const criminalAnswer = (answers as Record<string, unknown>).criminalRelevance as {
-          score: number;
-          confidence: number;
-          legend: unknown;
-        };
-        return {
-          score: criminalAnswer.score,
-          confidence: criminalAnswer.confidence,
-          legend: criminalAnswer.legend as Record<string, unknown>,
-        };
-      })()
-    : null;
+  const { answers } = await client.systemOne({
+    state,
+    questions: {
+      riskTier: riskTierQuestion,
+      financialRisk: financialRiskQuestion,
+      tenancyHistoryRisk: tenancyHistoryRiskQuestion,
+      priorEvictionOrder: priorEvictionOrderQuestion,
+      identityMismatch: identityMismatchQuestion,
+    },
+  });
 
   const reviewReasons: string[] = [];
   let riskTier: RiskTier = answers.riskTier.choice;
@@ -150,11 +105,9 @@ export async function evaluateTenantRisk(
     );
   }
 
-  const weights = criminalRelevance ? DIMENSION_WEIGHTS_WITH_CRIMINAL : DIMENSION_WEIGHTS_NO_CRIMINAL;
   const compositeScore =
-    (answers.financialRisk.score / 3) * weights.financialRisk +
-    (answers.tenancyHistoryRisk.score / 3) * weights.tenancyHistoryRisk +
-    (criminalRelevance ? criminalRelevance.score / 2 : 0) * weights.criminalRelevance;
+    (answers.financialRisk.score / 3) * DIMENSION_WEIGHTS.financialRisk +
+    (answers.tenancyHistoryRisk.score / 3) * DIMENSION_WEIGHTS.tenancyHistoryRisk;
 
   return {
     riskTier,
@@ -171,7 +124,6 @@ export async function evaluateTenantRisk(
         confidence: answers.tenancyHistoryRisk.confidence,
         legend: answers.tenancyHistoryRisk.legend as Record<string, unknown>,
       },
-      criminalRelevance,
     },
     flags: {
       priorEvictionOrder: answers.priorEvictionOrder.noul,

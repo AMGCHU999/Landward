@@ -48,7 +48,6 @@ export interface TenantRiskEvaluation {
   dimensions: {
     financialRisk: { score: number; confidence: number; legend: Record<string, unknown> };
     tenancyHistoryRisk: { score: number; confidence: number; legend: Record<string, unknown> };
-    criminalRelevance: { score: number; confidence: number; legend: Record<string, unknown> } | null;
   };
   flags: {
     priorEvictionOrder: number;
