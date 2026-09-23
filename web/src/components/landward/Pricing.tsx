@@ -18,8 +18,7 @@ export default function Pricing() {
               $45<span>per report, CAD</span>
             </div>
             <ul className="includes">
-              <li>Credit report</li>
-              <li>Background check</li>
+              <li>Credit &amp; background check</li>
               <li>Identity verification</li>
               <li>Free CanLII litigation &amp; LTB check</li>
               <li>Defensible, Code-compliant documentation</li>
