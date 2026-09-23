@@ -56,7 +56,8 @@ export default function Faq() {
             <p>
               Yes, in Ontario. "Record of offences" is a protected ground under the Human Rights Code for
               employment screening specifically — it isn't one of the Code's housing grounds. A criminal
-              record check is available as an add-on to your report for exactly this reason.
+              record check is available as an add-on to your report (add-on pricing will be announced at
+              launch) for exactly this reason.
             </p>
           </details>
           <details className="faq-item">
